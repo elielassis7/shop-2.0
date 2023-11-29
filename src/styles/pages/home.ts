@@ -73,6 +73,11 @@ export const Product = styled('div', {
       padding: 12,
       borderRadius: 6,
       background: '$green500',
+      cursor: 'pointer',
+
+      '&:hover': {
+        background: '$green300',
+      },
     },
   },
 

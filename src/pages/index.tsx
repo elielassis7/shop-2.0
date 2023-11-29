@@ -25,17 +25,13 @@ interface HomeProps {
     name: string
     imageUrl: string
     price: string
+    description: string
+    defaultPriceId: string
+    sku: string
   }[]
 }
 
 export default function Home({ products }: HomeProps) {
-  // const [sliderRef] = useKeenSlider({
-  //   slides: {
-  //     perView: 3,
-  //     spacing: 48,
-  //   },
-  // })
-
   const [currentSlide, setCurrentSlide] = React.useState(0)
   const [loaded, setLoaded] = useState(false)
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
@@ -51,6 +47,7 @@ export default function Home({ products }: HomeProps) {
       setLoaded(true)
     },
   })
+
   return (
     <>
       <Head>
@@ -110,32 +107,6 @@ export default function Home({ products }: HomeProps) {
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
-  const response = await stripe.products.list({
-    expand: ['data.default_price'],
-  })
-
-  const products = response.data.map((product) => {
-    const price = product.default_price as Stripe.Price
-    return {
-      id: product.id,
-      name: product.name,
-      imageUrl: product.images[0],
-      price: new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-      }).format((price.unit_amount || 0) / 100),
-    }
-  })
-
-  return {
-    props: {
-      products,
-    },
-    revalidate: 60 * 60 * 2,
-  }
-}
-
 function Arrow(props: {
   disabled: boolean
   left?: boolean
@@ -168,4 +139,32 @@ function Arrow(props: {
       )}
     </svg>
   )
+}
+
+export const getStaticProps: GetStaticProps = async () => {
+  const response = await stripe.products.list({
+    expand: ['data.default_price'],
+  })
+
+  const products = response.data.map((product) => {
+    const priceDefault = product.default_price as Stripe.Price
+    return {
+      id: product.id,
+      name: product.name,
+      imageUrl: product.images[0],
+      price: new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }).format((priceDefault.unit_amount || 0) / 100),
+      defaultPriceId: priceDefault.id,
+      sku: product.metadata.SKU,
+    }
+  })
+
+  return {
+    props: {
+      products,
+    },
+    revalidate: 60 * 60 * 2,
+  }
 }
