@@ -31,6 +31,7 @@ export function HandBag() {
   }).format((totalPrice || 0) / 100)
 
   async function handleToCheckout() {
+    console.log(cartDetails)
     if (cartCount !== undefined && cartCount > 0) {
       try {
         const response = await axios.post('/api/checkout', {

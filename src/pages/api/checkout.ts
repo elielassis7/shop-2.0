@@ -7,13 +7,12 @@ export default async function handler(
 ) {
   const { cartDetails } = req.body
 
-  const items = Object.keys(cartDetails).map((item: any) => {
+  const items = Object.entries(cartDetails).map((item: any) => {
     return {
-      price: item.id,
-      quantity: 1,
+      price: item[1].id,
+      quantity: item[1].quantity,
     }
   })
-
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
