@@ -3,6 +3,7 @@ import {
   CarouselContainer,
   HomeContainer,
   Product,
+  SkeletonLoading,
   arrow,
   arrowDisabled,
   arrowLeft,
@@ -53,37 +54,43 @@ export default function Home({ products }: HomeProps) {
       <Head>
         <title>Home | Ignite Shop</title>
       </Head>
+
       <HomeContainer>
-        <CarouselContainer ref={sliderRef} className="keen-slider">
-          {products.map((product) => {
-            return (
-              <Link
-                key={product.id}
-                href={`/product/${product.id}`}
-                prefetch={false}
-              >
-                <Product className="keen-slider__slide">
-                  <Image
-                    src={product.imageUrl}
-                    width={520}
-                    height={480}
-                    alt=""
-                    priority={true}
-                  />
-                  <footer>
-                    <div>
-                      <strong>{product.name}</strong>
-                      <span>{product.price}</span>
-                    </div>
-                    <button>
-                      <Image src={Handbag} alt="" />
-                    </button>
-                  </footer>
-                </Product>
-              </Link>
-            )
-          })}
-        </CarouselContainer>
+        {products.length === 0 ? (
+          <SkeletonLoading />
+        ) : (
+          <CarouselContainer ref={sliderRef} className="keen-slider">
+            {products.map((product) => {
+              return (
+                <Link
+                  key={product.id}
+                  href={`/product/${product.id}`}
+                  prefetch={false}
+                >
+                  <Product className="keen-slider__slide">
+                    <Image
+                      src={product.imageUrl}
+                      width={520}
+                      height={480}
+                      alt=""
+                      priority={true}
+                      placeholder="data:image/../assets/Card.png"
+                    />
+                    <footer>
+                      <div>
+                        <strong>{product.name}</strong>
+                        <span>{product.price}</span>
+                      </div>
+                      <button>
+                        <Image src={Handbag} alt="" />
+                      </button>
+                    </footer>
+                  </Product>
+                </Link>
+              )
+            })}
+          </CarouselContainer>
+        )}
         {loaded && instanceRef && (
           <>
             <Arrow

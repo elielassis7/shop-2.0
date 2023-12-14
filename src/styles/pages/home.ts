@@ -14,6 +14,14 @@ export const CarouselContainer = styled('div', {
   minHeight: 656,
 })
 
+export const SkeletonLoading = styled('div', {
+  borderRadius: 8,
+  cursor: 'pointer',
+  position: 'relative',
+  overflow: 'hidden',
+  backgroundColor: 'AliceBlue',
+})
+
 export const Product = styled('div', {
   background: 'linear-gradient(180deg, #1ea483 0%, #7465d4 100%)',
   borderRadius: 8,
