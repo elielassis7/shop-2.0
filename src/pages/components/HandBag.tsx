@@ -22,8 +22,7 @@ import axios from 'axios'
 import { MagicMotion } from 'react-magic-motion'
 
 export function HandBag() {
-  const { cartDetails, removeItem, totalPrice, cartCount, redirectToCheckout } =
-    useShoppingCart()
+  const { cartDetails, removeItem, totalPrice, cartCount } = useShoppingCart()
 
   const cartTotal = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
@@ -31,20 +30,13 @@ export function HandBag() {
   }).format((totalPrice || 0) / 100)
 
   async function handleToCheckout() {
-    console.log(cartDetails)
     if (cartCount !== undefined && cartCount > 0) {
       try {
         const response = await axios.post('/api/checkout', {
           cartDetails,
         })
-        const { checkoutId } = response.data
-        console.log(checkoutId)
-        const result = await redirectToCheckout(checkoutId)
-        console.log(result)
-        if (result?.error) {
-          console.error(result)
-          alert('Erro ao se conectar com servidor, tente novamente!')
-        }
+        const { checkoutUrl } = response.data
+        window.location.href = checkoutUrl
       } catch (error) {
         console.error(error)
       }

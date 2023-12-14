@@ -49,6 +49,7 @@ export const DialogTitle = styled(Dialog.Title, {
 
 export const DialogContent = styled(Dialog.Content, {
   position: 'fixed',
+  overflowY: 'scroll',
   top: 0,
   right: 0,
   height: '100vh',
@@ -82,7 +83,7 @@ export const ContainerHandBagItems = styled('div', {
   padding: '0 4px',
   margin: '32px 20px',
   gap: 24,
-  overflowY: 'scroll',
+  overflow: 'hidden',
 })
 
 export const HandBagItem = styled('div', {
